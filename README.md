@@ -65,17 +65,14 @@ Your recipient ID is your phone number with country code and no `+` sign. For ex
 
 **To send to a WhatsApp group (recommended):**
 1. Create a WhatsApp group on your phone.
-2. Ask someone to send a message in the group, or temporarily add a contact and have them message.
-3. Their message will show as `FROM: XXXXXXXXXX@g.us` — that number is your group ID.
-
-Alternatively, run the group finder script after linking your number to Whapi:
+2. Ask someone else in the group to send a message, or temporarily add a contact and have them message.
+3. Check Whapi's received messages to find the group ID:
 
 ```bash
-# Send a test message from your phone in the group, then check Whapi's received messages
 curl -H "Authorization: Bearer YOUR_TOKEN" https://gate.whapi.cloud/messages/in
 ```
 
-The group ID will appear in the `chat_id` field of the response.
+The group ID will appear in the `chat_id` field and ends with `@g.us`, for example `120363427603859887@g.us`.
 
 ### 6. Configure environment variables
 
@@ -89,7 +86,7 @@ Fill in all four values:
 ```
 LEETCODE_USERNAME=your_leetcode_username
 RECIPIENT_NUMBER=120363427603859887@g.us
-PYTHON_BIN=/home/YOUR_USERNAME/Downloads/leetcode-whatsapp-bot/venv/bin/python3
+PYTHON_BIN=/home/YOUR_USERNAME/leetcode-whatsapp-bot/venv/bin/python3
 WHAPI_TOKEN=your_whapi_token_here
 ```
 
@@ -102,35 +99,20 @@ which python3
 
 Copy that output into `PYTHON_BIN`.
 
-### 7. Create the run script
+### 7. Make the run script executable
 
 ```bash
-nano ~/run_leetcode_bot.sh
-```
-
-Paste:
-
-```bash
-#!/bin/bash
-cd /home/YOUR_USERNAME/Downloads/leetcode-whatsapp-bot
-source venv/bin/activate
-node send_report.js
-```
-
-Replace `YOUR_USERNAME` with your actual Linux username. Then make it executable:
-
-```bash
-chmod +x ~/run_leetcode_bot.sh
+chmod +x run.sh
 ```
 
 ---
 
 ## Running the Bot
 
-Each time you want to send the report:
+Each time you want to send the report, run from inside the project folder:
 
 ```bash
-~/run_leetcode_bot.sh
+./run.sh
 ```
 
 The terminal will show a preview of the message and confirm when it is sent. The WhatsApp message arrives within a few seconds.
@@ -142,7 +124,7 @@ The terminal will show a preview of the message and confirm when it is sent. The
 ```
 LeetCode Daily Report
 Friday, 30 May 2026
-adityacode0503
+your_username
 ────────────────────────────
 
 Solved Today: 2 problems
@@ -174,6 +156,7 @@ Global Rank: 3,12,653 (Top 36.2%)
 leetcode-whatsapp-bot/
 ├── fetch_leetcode.py     # Queries LeetCode GraphQL API
 ├── send_report.js        # Formats message and sends via Whapi
+├── run.sh                # One-command script to run the bot
 ├── requirements.txt      # Python dependencies (requests)
 ├── package.json          # Node dependencies (dotenv)
 ├── .env.example          # Template for environment variables
