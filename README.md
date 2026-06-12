@@ -1,14 +1,16 @@
-# LeetCode WhatsApp Bot
+# LeetCode + Codeforces WhatsApp Bot
 
-Sends a daily WhatsApp report of your LeetCode activity — problems solved today (with problem number, title, and topics), all-time stats by difficulty, and contest rating. Uses LeetCode's public GraphQL API and Whapi.Cloud's free sandbox plan.
+Sends a daily WhatsApp report of your competitive-programming activity — LeetCode and Codeforces problems solved today (with problem number, title, and topics), all-time stats, and contest ratings. Uses LeetCode's public GraphQL API, Codeforces' public REST API, and Whapi.Cloud's free sandbox plan.
 
 ---
 
 ## How It Works
 
-1. A Python script queries LeetCode's GraphQL API to fetch today's solved problems, all-time stats, and contest rating for your username.
-2. A Node.js script formats the data into a WhatsApp message and sends it via the Whapi.Cloud API.
+1. Python scripts query LeetCode's GraphQL API and Codeforces' REST API to fetch today's solved problems, all-time stats, and contest ratings for your accounts.
+2. A Node.js script formats the data into a single WhatsApp message and sends it via the Whapi.Cloud API.
 3. You run one shell script to trigger everything.
+
+The Codeforces section is optional — leave `CODEFORCES_HANDLE` blank and the report just sends LeetCode.
 
 No browser automation. No QR codes after initial setup. No cost.
 
@@ -81,14 +83,17 @@ cp .env.example .env
 nano .env
 ```
 
-Fill in all four values:
+Fill in the values (`CODEFORCES_HANDLE` is optional):
 
 ```
 LEETCODE_USERNAME=your_leetcode_username
+CODEFORCES_HANDLE=your_codeforces_handle
 RECIPIENT_NUMBER=120363427603859887@g.us
 PYTHON_BIN=/home/YOUR_USERNAME/leetcode-whatsapp-bot/venv/bin/python3
 WHAPI_TOKEN=your_whapi_token_here
 ```
+
+`CODEFORCES_HANDLE` is just the handle (e.g. `adityacode0503`), not the full profile URL. Leave it blank to skip the Codeforces section.
 
 To find your exact Python binary path:
 
@@ -146,6 +151,24 @@ Total: 351
 Contest Stats
 Rating: 1531
 Global Rank: 3,12,653 (Top 36.2%)
+
+
+Codeforces
+adityacode0503
+────────────────────────────
+
+Solved Today: 1 problem
+
+  #1850A Codeforces problem [800]
+  implementation, math
+
+────────────────────────────
+All-Time Solved
+Total: 142
+
+────────────────────────────
+Contest Stats
+Rating: 1187 (pupil)   Max: 1243
 ```
 
 ---
@@ -155,6 +178,7 @@ Global Rank: 3,12,653 (Top 36.2%)
 ```
 leetcode-whatsapp-bot/
 ├── fetch_leetcode.py     # Queries LeetCode GraphQL API
+├── fetch_codeforces.py   # Queries Codeforces REST API
 ├── send_report.js        # Formats message and sends via Whapi
 ├── run.sh                # One-command script to run the bot
 ├── requirements.txt      # Python dependencies (requests)
@@ -194,7 +218,8 @@ Make sure you activated the venv before running: `source venv/bin/activate`. The
 
 | Name | Purpose | Cost |
 |------|---------|------|
-| LeetCode GraphQL API | Fetch solve data | Free, no auth needed |
+| LeetCode GraphQL API | Fetch LeetCode solve data | Free, no auth needed |
+| Codeforces REST API | Fetch Codeforces solve data | Free, no auth needed |
 | Whapi.Cloud Sandbox | Send WhatsApp messages | Free, 150 msg/day |
 | Python requests | HTTP calls in Python | Free |
 | Node.js dotenv | Load .env variables | Free |
