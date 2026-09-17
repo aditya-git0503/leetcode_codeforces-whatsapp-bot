@@ -31,7 +31,7 @@ No browser automation. No QR codes after initial setup. No cost.
 ### 1. Clone the repository
 
 ```bash
-https://github.com/aditya-git0503/leetcode_codeforces-whatsapp-bot
+git clone https://github.com/aditya-git0503/leetcode_codeforces-whatsapp-bot
 cd leetcode-whatsapp-bot
 ```
 
